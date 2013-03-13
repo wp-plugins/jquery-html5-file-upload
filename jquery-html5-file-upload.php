@@ -176,6 +176,17 @@ jQuery(function () {
 /* Block of code that need to be printed to the form*/
 function jquery_html5_file_upload_hook() {
 ?>
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-8264268943944137";
+/* Add for JQFU Plugin */
+google_ad_slot = "3528882927";
+google_ad_width = 468;
+google_ad_height = 60;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
 <!-- The file upload form used as target for the file upload widget -->
     <form id="fileupload" action="<?php print(admin_url().'admin-ajax.php');?>" method="POST" enctype="multipart/form-data">
         <!-- Redirect browsers with JavaScript disabled to the origin page -->
