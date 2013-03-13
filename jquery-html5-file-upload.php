@@ -1,27 +1,13 @@
 <?php
 /*
 Plugin Name: JQuery Html5 File Upload
-Plugin URI: 
-Description: Add a file upload functionality to your wordpress site with the power of HTML5 and graceful fallback.
-Version: 1.0.0
+Plugin URI: http://wordpress.org/extend/plugins/jquery-html5-file-upload/
+Description: This plugin adds a file upload functionality to the front-end screen. It allows multiple file upload asynchronously along with upload status bar.
+Version: 1.1
 Author: Anwar Swabiri
 Author URI: 
-License: GPL2
-*/
-/*  Copyright 2013  
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License, version 2, as
-    published by the Free Software Foundation.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
 
 
