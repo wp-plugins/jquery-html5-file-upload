@@ -2,7 +2,7 @@
 Contributors: AnwarSwabiri
 Donate link: 
 Tags: jQuery Fileupload, Frontend Fileupload, Frontend, Media Upload, Picture Upload, Upload, Ajax Upload, HTML5, Progress Bar, Upload File, Uploadfile, Ajax Based File Uploader, File Uploader, Image Uploader, Progress bar, User Desgins Uploader, User Files, User Files Manager
-Requires at least: 3.3
+Requires at least: 2.8.6
 Tested up to: 3.5.1
 Stable tag: 1.1
 License: GPLv2 or later
