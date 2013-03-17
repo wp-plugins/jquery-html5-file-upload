@@ -20,24 +20,35 @@ The main advantage of this plugin is that it does not use flash and that it does
 
 This plugin mainly make use of the JQuery File Upload plugin (http://blueimp.github.com/jQuery-File-Upload/). Please refer to the link for more features of the plugin. Also, feel free to modify the plugin as per your needs
 
+Features 
+
 Multiple file upload:
 Allows to select multiple files at once and upload them simultaneously.
+
 Drag & Drop support:
 Allows to upload files by dragging them from your desktop or filemanager and dropping them on your browser window.
+
 Upload progress bar:
 Shows a progress bar indicating the upload progress for individual files and for all uploads combined.
+
 Preview images:
 A preview of image files can be displayed before uploading with browsers supporting the required JS APIs.
+
 No browser plugins (e.g. Adobe Flash) required:
 The implementation is based on open standards like HTML5 and JavaScript and requires no additional browser plugins.
+
 Graceful fallback for legacy browsers:
 Uploads files via XMLHttpRequests if supported and uses iframes as fallback for legacy browsers.
+
 HTML file upload form fallback:
 Allows progressive enhancement by using a standard HTML file upload form as widget element.
+
 Cross-site file uploads:
 Supports uploading files to a different domain with cross-site XMLHttpRequests or iframe redirects.
+
 Multiple plugin instances:
 Allows to use multiple plugin instances on the same webpage.
+
 Customizable and extensible:
 You can change the settings from the admin panel.
 
