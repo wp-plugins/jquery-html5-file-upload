@@ -66,12 +66,12 @@ class UploadHandler
             // Enable to provide file downloads via GET requests to the PHP script:
             'download_via_php' => false,
             // Defines which files can be displayed inline when downloaded:
-            'inline_file_types' => '/\.(gif|jpe?g|png)$/i',
+            'inline_file_types' => '/\.('.get_option('jqhfu_inline_file_types').')$/i',
             // Defines which files (based on their names) are accepted for upload:
-            'accept_file_types' => '/\.(gif|jpe?g|png)$/i',
+            'accept_file_types' => '/\.('.get_option('jqhfu_accepted_file_types').')$/i',
             // The php.ini settings upload_max_filesize and post_max_size
             // take precedence over the following max_file_size setting:
-            'max_file_size' => null,
+            'max_file_size' => (1048576*get_option('jqhfu_maximum_file_size')),
             'min_file_size' => 1,
             // The maximum number of files for the upload directory:
             'max_number_of_files' => null,
@@ -103,8 +103,8 @@ class UploadHandler
                 ),
                 */
                 'thumbnail' => array(
-                    'max_width' => 80,
-                    'max_height' => 80
+                    'max_width' => get_option('jqhfu_thumbnail_width'),
+                    'max_height' => get_option('jqhfu_thumbnail_height')
                 )
             )
         );

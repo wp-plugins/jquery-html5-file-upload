@@ -21,6 +21,12 @@ register_activation_hook(__FILE__,'jquery_html5_file_upload_install');
 register_deactivation_hook( __FILE__, 'jquery_html5_file_upload_remove' );
 
 function jquery_html5_file_upload_install() {
+	add_option("jqhfu_accepted_file_types", 'gif|jpeg|jpg|png', '', 'yes');
+	add_option("jqhfu_inline_file_types", 'gif|jpeg|jpg|png', '', 'yes');
+	add_option("jqhfu_maximum_file_size", '5', '', 'yes');
+	add_option("jqhfu_thumbnail_width", '80', '', 'yes');
+	add_option("jqhfu_thumbnail_height", '80', '', 'yes');
+	
 	$upload_array = wp_upload_dir();
 	$upload_dir=$upload_array['basedir'].'/files/';
 	/* Create the directory where you upoad the file */
@@ -32,8 +38,84 @@ function jquery_html5_file_upload_install() {
 }
 
 function jquery_html5_file_upload_remove() {
-	//do nothing as of now
+	/* Deletes the database field */
+	delete_option('jqhfu_accepted_file_types');
+	delete_option('jqhfu_inline_file_types');
+	delete_option('jqhfu_maximum_file_size');
+	delete_option('jqhfu_thumbnail_width');
+	delete_option('jqhfu_thumbnail_height');
 }
+
+if(isset($_POST['savesetting']) && $_POST['savesetting']=="Save Setting")
+{
+	update_option("jqhfu_accepted_file_types", $_POST['accepted_file_types']);
+	update_option("jqhfu_inline_file_types", $_POST['inline_file_types']);
+	update_option("jqhfu_maximum_file_size", $_POST['maximum_file_size']);
+	update_option("jqhfu_thumbnail_width", $_POST['thumbnail_width']);
+	update_option("jqhfu_thumbnail_height", $_POST['thumbnail_height']);
+}
+
+if ( is_admin() ){
+
+/* Call the html code */
+add_action('admin_menu', 'jquery_html5_file_upload_admin_menu');
+
+
+function jquery_html5_file_upload_admin_menu() {
+add_options_page('JQuery HTML5 File Upload Setting', 'JQuery HTML5 File Upload Setting', 'administrator',
+'jquery-html5-file-upload-setting', 'jquery_html5_file_upload_html_page');
+}
+}
+
+function jquery_html5_file_upload_html_page() {
+?>
+<h2>JQuery HTML5 File Upload Setting</h2>
+
+<form method="post" >
+<?php wp_nonce_field('update-options'); ?>
+
+<table >
+<tr >
+<td>Accepted File Types</td>
+<td >
+<input type="text" name="accepted_file_types" value="<?php print(get_option('jqhfu_accepted_file_types')); ?>" />&nbsp;filetype seperated by | (e.g. gif|jpeg|jpg|png)
+</td>
+</tr>
+<tr >
+<td>Inline File Types</td>
+<td >
+<input type="text" name="inline_file_types" value="<?php print(get_option('jqhfu_inline_file_types')); ?>" />&nbsp;filetype seperated by | (e.g. gif|jpeg|jpg|png)
+</td>
+</tr>
+<tr >
+<td>Maximum File Size</td>
+<td >
+<input type="text" name="maximum_file_size" value="<?php print(get_option('jqhfu_maximum_file_size')); ?>" />&nbsp;MB
+</td>
+</tr>
+<tr >
+<td>Thumbnail Width </td>
+<td >
+<input type="text" name="thumbnail_width" value="<?php print(get_option('jqhfu_thumbnail_width')); ?>" />&nbsp;px
+</td>
+</tr
+<tr >
+<td>Thumbnail Height </td>
+<td >
+<input type="text" name="thumbnail_height" value="<?php print(get_option('jqhfu_thumbnail_height')); ?>" />&nbsp;px
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<input type="submit" name="savesetting" value="Save Setting" />
+</td>
+</tr>
+</table>
+
+</form>
+<?php
+}
+
 
 function jqhfu_enqueue_scripts() {
 	$stylepath=JQHFUPLUGINDIRURL.'css/';
@@ -113,24 +195,10 @@ jQuery(function () {
             //xhrFields: {withCredentials: true},
             url: jQuery('#fileupload').fileupload('option', 'url'),
 			data : {action: "load_ajax_function"},
-			acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+			acceptFileTypes: /(\.|\/)(<?php print(get_option('jqhfu_accepted_file_types')); ?>)$/i,
 			dataType: 'json',
-			context: jQuery('#fileupload')[0],
-			process: [
-		                {
-		                    action: 'load',
-		                    fileTypes: /^image\/(gif|jpeg|png)$/,
-		                    maxFileSize: 20000000 // 20MB
-		                },
-		                {
-		                    action: 'resize',
-		                    maxWidth: 1440,
-		                    maxHeight: 900
-		                },
-		                {
-		                    action: 'save'
-		                }
-		            ]
+			context: jQuery('#fileupload')[0]
+			
             
         }).done(function (result) {
 			jQuery(this).fileupload('option', 'done')
@@ -287,6 +355,10 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <?php
 }
 
+function jquery_file_upload_shortcode() {
+      jquery_html5_file_upload_hook();
+}
+
 /* Add the resources */
 add_action( 'wp_enqueue_scripts', 'jqhfu_enqueue_scripts' );
 
@@ -297,3 +369,4 @@ add_action( 'wp_footer', 'jqhfu_add_inline_script' );
 add_action('wp_ajax_load_ajax_function', 'jqhfu_load_ajax_function');
 add_action('wp_ajax_nopriv_load_ajax_function', 'jqhfu_load_ajax_function');
 
+add_shortcode ('jquery_file_upload', 'jquery_file_upload_shortcode');
