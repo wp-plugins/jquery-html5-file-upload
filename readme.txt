@@ -22,38 +22,28 @@ This plugin mainly make use of the JQuery File Upload plugin (http://blueimp.git
 
 Features 
 
-View files at admin console:
-View the uploaded files at the wp-admin console
-
-Multiple file upload:
-Allows to select multiple files at once and upload them simultaneously.
-
-Drag & Drop support:
-Allows to upload files by dragging them from your desktop or filemanager and dropping them on your browser window.
-
-Upload progress bar:
-Shows a progress bar indicating the upload progress for individual files and for all uploads combined.
-
-Preview images:
-A preview of image files can be displayed before uploading with browsers supporting the required JS APIs.
-
-No browser plugins (e.g. Adobe Flash) required:
-The implementation is based on open standards like HTML5 and JavaScript and requires no additional browser plugins.
-
-Graceful fallback for legacy browsers:
-Uploads files via XMLHttpRequests if supported and uses iframes as fallback for legacy browsers.
-
-HTML file upload form fallback:
-Allows progressive enhancement by using a standard HTML file upload form as widget element.
-
-Cross-site file uploads:
-Supports uploading files to a different domain with cross-site XMLHttpRequests or iframe redirects.
-
-Multiple plugin instances:
-Allows to use multiple plugin instances on the same webpage.
-
-Customizable and extensible:
-You can change the settings from the admin panel.
+1. View files at admin console:
+   View the uploaded files at the wp-admin console
+2. Multiple file upload:
+   Allows to select multiple files at once and upload them simultaneously.
+2. Drag & Drop support:
+   Allows to upload files by dragging them from your desktop or filemanager and dropping them on your browser window.
+4. Upload progress bar:
+   Shows a progress bar indicating the upload progress for individual files and for all uploads combined.
+5. Preview images:
+   A preview of image files can be displayed before uploading with browsers supporting the required JS APIs.
+6. No browser plugins (e.g. Adobe Flash) required:
+   The implementation is based on open standards like HTML5 and JavaScript and requires no additional browser plugins.
+7. Graceful fallback for legacy browsers:
+   Uploads files via XMLHttpRequests if supported and uses iframes as fallback for legacy browsers.
+8. HTML file upload form fallback:
+   Allows progressive enhancement by using a standard HTML file upload form as widget element.
+9. Cross-site file uploads:
+   Supports uploading files to a different domain with cross-site XMLHttpRequests or iframe redirects.
+10.Multiple plugin instances:
+   Allows to use multiple plugin instances on the same webpage.
+11.Customizable and extensible:
+    You can change the settings from the admin panel.
 
 == Installation ==
 
