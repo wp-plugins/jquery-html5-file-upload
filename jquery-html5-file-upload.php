@@ -68,6 +68,11 @@ add_options_page('JQuery HTML5 File Upload Setting', 'JQuery HTML5 File Upload S
 }
 
 function jquery_html5_file_upload_html_page() {
+$args = array(
+    'orderby'                 => 'display_name',
+    'order'                   => 'ASC',
+    'selected'                => $_POST['user']
+);
 ?>
 <h2>JQuery HTML5 File Upload Setting</h2>
 
@@ -111,7 +116,62 @@ function jquery_html5_file_upload_html_page() {
 </td>
 </tr>
 </table>
-
+<br/>
+<hr/>
+<h2>View Uploaded Files</h2>
+<table >
+<tr >
+<td>Select User</td>
+<td >
+<?php wp_dropdown_users($args); ?> 
+</td>
+<td>
+<input type="submit" name="viewfiles" value="View Files" /> &nbsp; <input type="submit" name="viewguestfiles" value="View Guest Files" />
+</td>
+</tr>
+<tr>
+</table>
+<table>
+<tr>
+<td>
+<?php
+if(isset($_POST['viewfiles']) && $_POST['viewfiles']=='View Files')
+{
+if ($_POST['user']) {
+	$upload_array = wp_upload_dir();
+	$imgpath=$upload_array['basedir'].'/files/'.$_POST ['user'].'/';
+	$filearray=glob($imgpath.'*');
+	if($filearray && is_array($filearray))
+	{
+		foreach($filearray as $filename){
+			if(basename($filename)!='thumbnail'){
+			print('<a href="'.$upload_array['baseurl'].'/files/'.$_POST ['user'].'/'.basename($filename).'" target="_blank"/>'.basename($filename).'</a>');
+			print('<br/>');
+			}
+		}
+	}
+} 
+}
+else
+if(isset($_POST['viewguestfiles']) && $_POST['viewguestfiles']=='View Guest Files')
+{
+	$upload_array = wp_upload_dir();
+	$imgpath=$upload_array['basedir'].'/files/guest/';
+	$filearray=glob($imgpath.'*');
+	if($filearray && is_array($filearray))
+	{
+		foreach($filearray as $filename){
+			if(basename($filename)!='thumbnail'){
+			print('<a href="'.$upload_array['baseurl'].'/files/guest/'.basename($filename).'" target="_blank"/>'.basename($filename).'</a>');
+			print('<br/>');
+			}
+		}
+	}
+}
+?>
+</td>
+</tr>
+</table>
 </form>
 <?php
 }
