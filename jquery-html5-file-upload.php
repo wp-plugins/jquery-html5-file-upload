@@ -55,6 +55,16 @@ if(isset($_POST['savesetting']) && $_POST['savesetting']=="Save Setting")
 	update_option("jqhfu_thumbnail_height", $_POST['thumbnail_height']);
 }
 
+// Add settings link on plugin page
+function jquery_html5_file_upload_settings_link($links) { 
+  $settings_link = '<a href="options-general.php?page=jquery-html5-file-upload-setting.php">Settings</a>'; 
+  array_unshift($links, $settings_link); 
+  return $links; 
+}
+ 
+$plugin = plugin_basename(__FILE__); 
+add_filter("plugin_action_links_$plugin", 'jquery_html5_file_upload_settings_link' );
+
 if ( is_admin() ){
 
 /* Call the html code */
