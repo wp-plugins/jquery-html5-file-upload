@@ -75,6 +75,7 @@ It works in browsers like Google Chrome, Apple Safari 4.0+, Mozilla Firefox 3.0+
 2. screenshot-2.jpg
 3. screenshot-3.jpg
 4. screenshot-4.jpg
+5. screenshot-5.jpg
 
 == Changelog ==
 
