@@ -12,7 +12,9 @@ This plugin adds a file upload functionality to the front-end screen. It allows 
 
 == Description ==
 
-"Activate Plugin And Place [jquery_file_upload] In Your Post And View the Uploaded Files At Your Admin Console", so simple... right? :)
+"Activate Plugin And Place [jquery_file_upload] In Your Post", so simple... right? :)
+
+Note: Now You Can View the Uploaded Files At Your Admin Console
 
 This plugin adds a file upload functionality to the front-end screen. It allows multiple file upload asynchronously along with upload status bar. It also lists the uploaded files as a gallery and allows us to delete the uploaded files. This is well suited for users who want to submit files to the admin, but can be altered in any required form. It make use of the HTML5 capability of the browser and fallback gracefully for browsers not supporting HTML5. 
 
