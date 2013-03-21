@@ -1,6 +1,6 @@
 === JQuery Html5 File Upload ===
 Contributors: AnwarSwabiri
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WUAVR9HHQVATG
+Donate link: 
 Tags: jQuery Fileupload, Frontend Fileupload, Frontend, Media Upload, Picture Upload, Upload, Ajax Upload, HTML5, Progress Bar, Upload File, Uploadfile, Ajax Based File Uploader, File Uploader, Image Uploader, Progress bar, User Desgins Uploader, User Files, User Files Manager
 Requires at least: 2.8.6
 Tested up to: 3.5.1
