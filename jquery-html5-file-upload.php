@@ -161,22 +161,6 @@ jQuery(function () {
 
 /* Block of code that need to be printed to the form*/
 function jquery_html5_file_upload_hook() {
-$whitelist = array('localhost', '127.0.0.1');
-if(!in_array($_SERVER['HTTP_HOST'], $whitelist)){
-?>
-<script type="text/javascript"><!--
-google_ad_client = "ca-pub-8264268943944137";
-/* Add for JQFU Plugin */
-google_ad_slot = "3528882927";
-google_ad_width = 468;
-google_ad_height = 60;
-//-->
-</script>
-<script type="text/javascript"
-src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
-<?php
-}
 ?>
 <!-- The file upload form used as target for the file upload widget -->
     <form id="fileupload" action="<?php print(admin_url().'admin-ajax.php');?>" method="POST" enctype="multipart/form-data">
