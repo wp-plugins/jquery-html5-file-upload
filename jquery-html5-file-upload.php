@@ -190,25 +190,32 @@ if(isset($_POST['viewguestfiles']) && $_POST['viewguestfiles']=='View Guest File
 function jqhfu_enqueue_scripts() {
 	$stylepath=JQHFUPLUGINDIRURL.'css/';
 	$scriptpath=JQHFUPLUGINDIRURL.'js/';
-
-	wp_enqueue_style ( 'jquery-ui-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/themes/base/jquery-ui.css' );
-	wp_enqueue_style ( 'jquery-image-gallery-style', 'http://blueimp.github.com/jQuery-Image-Gallery/css/jquery.image-gallery.min.css');
-	wp_enqueue_style ( 'jquery-fileupload-ui-style', $stylepath . 'jquery.fileupload-ui.css');
-	wp_enqueue_script ( 'enable-html5-script', 'http://html5shim.googlecode.com/svn/trunk/html5.js');
+	
+	//wp_enqueue_style ( 'bootstrap-style', $stylepath.'bootstrap.min.css' );
+	wp_enqueue_style ( 'style', $stylepath.'style.css' );
+	wp_enqueue_style ( 'blueimp-gallery-style', $stylepath.'blueimp-gallery.min.css' );
+	wp_enqueue_style ( 'jquery.fileupload-style', $stylepath.'jquery.fileupload.css' );
+	wp_enqueue_style ( 'jquery.fileupload-ui-style', $stylepath.'jquery.fileupload-ui.css' );
+	wp_enqueue_style ( 'jquery.fileupload-noscript-style', $stylepath.'jquery.fileupload-noscript.css' );
+    wp_enqueue_style ( 'jquery.fileupload-ui-noscript', $stylepath.'jquery.fileupload-ui-noscript.css' );			
+	
 	if(!wp_script_is('jquery')) {
-		wp_enqueue_script ( 'jquery', '//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js',array(),'',false);
+		wp_enqueue_script ( 'jquery', $scriptpath .'jquery.min.js',array(),'',false);
 	}
-	wp_enqueue_script ( 'jquery-ui-script', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/jquery-ui.min.js',array('jquery'),'',true);
-	wp_enqueue_script ( 'tmpl-script', 'http://blueimp.github.com/JavaScript-Templates/tmpl.min.js',array('jquery'),'',true);
-	wp_enqueue_script ( 'load-image-script', 'http://blueimp.github.com/JavaScript-Load-Image/load-image.min.js',array('jquery'),'',true);
-	wp_enqueue_script ( 'canvas-to-blob-script', 'http://blueimp.github.com/JavaScript-Canvas-to-Blob/canvas-to-blob.min.js',array('jquery'),'',true);
-	wp_enqueue_script ( 'jquery-image-gallery-script', 'http://blueimp.github.com/jQuery-Image-Gallery/js/jquery.image-gallery.min.js',array('jquery'),'',true);
+	wp_enqueue_script ( 'jquery-ui-widget-script', $scriptpath . 'vendor/jquery.ui.widget.js',array('jquery'),'',true);
+	wp_enqueue_script ( 'jtmpl-script', $scriptpath . 'tmpl.min.js',array('jquery'),'',true);
+	wp_enqueue_script ( 'load-image-all-script', $scriptpath . 'load-image.all.min.js',array('jquery'),'',true);
+	wp_enqueue_script ( 'canvas-to-blob-script', $scriptpath . 'canvas-to-blob.min.js',array('jquery'),'',true);
+	//wp_enqueue_script ( 'bootstrap-script', $scriptpath . 'bootstrap.min.js',array('jquery'),'',true);
+	wp_enqueue_script ( 'jquery-blueimp-gallery-script', $scriptpath . 'jquery.blueimp-gallery.min.js',array('jquery'),'',true);
 	wp_enqueue_script ( 'jquery-iframe-transport-script', $scriptpath . 'jquery.iframe-transport.js',array('jquery'),'',true);
 	wp_enqueue_script ( 'jquery-fileupload-script', $scriptpath . 'jquery.fileupload.js',array('jquery'),'',true);
-	wp_enqueue_script ( 'jquery-fileupload-fp-script', $scriptpath . 'jquery.fileupload-fp.js',array('jquery'),'',true);
+	wp_enqueue_script ( 'jquery-fileupload-process-script', $scriptpath . 'jquery.fileupload-process.js',array('jquery'),'',true);
+	wp_enqueue_script ( 'jquery-fileupload-image-script', $scriptpath . 'jquery.fileupload-image.js',array('jquery'),'',true);
+	wp_enqueue_script ( 'jquery-fileupload-audio-script', $scriptpath . 'jquery.fileupload-audio.js',array('jquery'),'',true);
+	wp_enqueue_script ( 'jquery-fileupload-video-script', $scriptpath . 'jquery.fileupload-video.js',array('jquery'),'',true);
+	wp_enqueue_script ( 'jquery-fileupload-validate-script', $scriptpath . 'jquery.fileupload-validate.js',array('jquery'),'',true);
 	wp_enqueue_script ( 'jquery-fileupload-ui-script', $scriptpath . 'jquery.fileupload-ui.js',array('jquery'),'',true);
-	wp_enqueue_script ( 'jquery-fileupload-jui-script', $scriptpath . 'jquery.fileupload-jui.js',array('jquery'),'',true);
-	wp_enqueue_script ( 'transport-script', $scriptpath . 'cors/jquery.xdr-transport.js',array('jquery'),'',true);
 }	
 
 function jqhfu_load_ajax_function()
@@ -237,6 +244,7 @@ function jqhfu_add_inline_script() {
  * Licensed under the MIT license:
  * http://www.opensource.org/licenses/MIT
  */
+jQuery.noConflict(); 
 jQuery(function () {
     'use strict';
 
@@ -260,6 +268,8 @@ jQuery(function () {
 
 	if(jQuery('#fileupload')) {
 		// Load existing files:
+        jQuery('#fileupload').addClass('fileupload-processing');
+		// Load existing files:
         jQuery.ajax({
             // Uncomment the following to send cross-domain cookies:
             //xhrFields: {withCredentials: true},
@@ -268,19 +278,19 @@ jQuery(function () {
 			acceptFileTypes: /(\.|\/)(<?php print(get_option('jqhfu_accepted_file_types')); ?>)$/i,
 			dataType: 'json',
 			context: jQuery('#fileupload')[0]
-			
-            
+		}).always(function () {
+            jQuery(this).removeClass('fileupload-processing');	    
         }).done(function (result) {
 			jQuery(this).fileupload('option', 'done')
-						.call(this, null, {result: result});
+						.call(this, jQuery.Event('done'), {result: result});
         });
     }
 
     // Initialize the Image Gallery widget:
-    jQuery('#fileupload .files').imagegallery();
+    //jQuery('#fileupload .files').imagegallery();
 
     // Initialize the theme switcher:
-    jQuery('#theme-switcher').change(function () {
+    /*jQuery('#theme-switcher').change(function () {
         var theme = jQuery('#theme');
         theme.prop(
             'href',
@@ -289,7 +299,7 @@ jQuery(function () {
                 jQuery(this).val() + '/jquery-ui.css'
             )
         );
-    });
+    });*/
 
 });
 
@@ -352,29 +362,31 @@ function jquery_html5_file_upload_hook() {
 <script id="template-upload" type="text/x-tmpl">
 {% for (var i=0, file; file=o.files[i]; i++) { %}
     <tr class="template-upload fade">
-        <td class="preview"><span class="fade"></span></td>
-       
-        {% if (file.error) { %}
-            <td class="error" colspan="2"><span class="label label-important">Error: </span> {%=file.error%}</td>
-        {% } else if (o.files.valid && !i) { %}
-            <td >
-                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
-            </td>
-            <td class="start" colspan="3">{% if (!o.options.autoUpload) { %}
-                <button class="btn btn-primary">
-                    <i class="icon-upload icon-white"></i>
+        <td>
+            <span class="preview"></span>
+        </td>
+        <td>
+            <p class="name">{%=file.name%}</p>
+            <strong class="error text-danger"></strong>
+        </td>
+        <td>
+            <p class="size">Processing...</p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+        </td>
+        <td>
+            {% if (!i && !o.options.autoUpload) { %}
+                <button class="btn btn-primary start" disabled>
+                    <i class="glyphicon glyphicon-upload"></i>
                     <span>Start</span>
                 </button>
-            {% } %}</td>
-        {% } else { %}
-            <td colspan="2"></td>
-        {% } %}
-        <td class="cancel">{% if (!i) { %}
-            <button class="btn btn-warning">
-                <i class="icon-ban-circle icon-white"></i>
-                <span>Cancel</span>
-            </button>
-        {% } %}</td>
+            {% } %}
+            {% if (!i) { %}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
+        </td>
     </tr>
 {% } %}
 </script>
@@ -382,26 +394,41 @@ function jquery_html5_file_upload_hook() {
 <script id="template-download" type="text/x-tmpl">
 {% for (var i=0, file; file=o.files[i]; i++) { %}
     <tr class="template-download fade">
-        {% if (file.error) { %}
-		<td class="error" colspan="5"><span class="label label-important">Error: </span> {%=file.error%} ({%=file.name.substring(4)%})</td>            
-            
-        {% } else { %}
-            <td class="preview">{% if (file.thumbnail_url) { %}
-                <a href="{%=file.url%}" title="{%=file.name%}" data-gallery="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}"></a>
-            {% } %}</td>
-            <td class="name" style="width:200px;">
-<div style="width:190px;overflow-x:hidden;">
-                <a href="{%=file.url%}" title="{%=file.name%}" data-gallery="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
-           </div> </td>
-            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
-            <td colspan="2"></td>
-        {% } %}
-        <td class="delete">
-            <button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}&action=load_ajax_function"{% if (file.delete_with_credentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
-                <i class="icon-trash icon-white"></i>
-                <span>Delete</span>
-            </button>
-            <input type="checkbox" name="delete" value="1">
+        <td>
+            <span class="preview">
+                {% if (file.thumbnailUrl) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+                {% } %}
+            </span>
+        </td>
+        <td>
+            <p class="name">
+                {% if (file.url) { %}
+                    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                {% } else { %}
+                    <span>{%=file.name%}</span>
+                {% } %}
+            </p>
+            {% if (file.error) { %}
+                <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+            {% } %}
+        </td>
+        <td>
+            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+        </td>
+        <td>
+            {% if (file.deleteUrl) { %}
+                <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <span>Delete</span>
+                </button>
+                <input type="checkbox" name="delete" value="1" class="toggle">
+            {% } else { %}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
         </td>
     </tr>
 {% } %}
