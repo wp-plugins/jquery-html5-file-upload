@@ -547,7 +547,7 @@
 
         _transition: function (node) {
             var dfd = $.Deferred();
-            if ($.support.transition && node.hasClass('fade') && node.is(':visible')) {
+            if ($.support.transition && node.hasClass('jqhfu-fade') && node.is(':visible')) {
                 node.bind(
                     $.support.transition.end,
                     function (e) {

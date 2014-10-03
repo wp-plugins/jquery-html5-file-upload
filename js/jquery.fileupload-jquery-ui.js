@@ -69,7 +69,7 @@
                 icons: {primary: 'ui-icon-cancel'},
                 text: showIconText
             });
-            if (node.hasClass('fade')) {
+            if (node.hasClass('jqhfu-fade')) {
                 node.hide();
             }
             return node;
@@ -82,7 +82,7 @@
                 icons: {primary: 'ui-icon-trash'},
                 text: showIconText
             });
-            if (node.hasClass('fade')) {
+            if (node.hasClass('jqhfu-fade')) {
                 node.hide();
             }
             return node;
@@ -95,7 +95,7 @@
 
         _transition: function (node) {
             var deferred = $.Deferred();
-            if (node.hasClass('fade')) {
+            if (node.hasClass('jqhfu-fade')) {
                 node.fadeToggle(
                     this.options.transitionDuration,
                     this.options.transitionEasing,

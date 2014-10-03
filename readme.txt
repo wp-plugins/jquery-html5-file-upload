@@ -1,16 +1,18 @@
 === JQuery Html5 File Upload ===
-Contributors: AnwarSwabiri
+Contributors: Sinash Shajahan
 Donate link: 
 Tags: jQuery Fileupload, Frontend Fileupload, Frontend, Media Upload, Picture Upload, Upload, Ajax Upload, HTML5, Progress Bar, Upload File, Uploadfile, Ajax Based File Uploader, File Uploader, Image Uploader, Progress bar, User Desgins Uploader, User Files, User Files Manager
 Requires at least: 2.8.6
 Tested up to: 4.0
-Stable tag: 2.2
+Stable tag: 3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 This plugin adds a file upload functionality to the front-end screen. It allows multiple file upload asynchronously along with upload status bar.
 
 == Description ==
+
+October 3rd 2014 - "Sorry for the delay in responding to your support queries. Going forward, the plugin will be actively maintained"
 
 "Activate Plugin And Place [jquery_file_upload] In Your Post", so simple... right? :)
 
@@ -73,6 +75,19 @@ It works in browsers like Google Chrome, Apple Safari 4.0+, Mozilla Firefox 3.0+
 5. screenshot-5.jpg
 
 == Changelog ==
+
+Version 3.0
+
+Fixes
+Fixed the issue with the delete functionality
+Fixed the layout issue in desktop screen
+Fixed the layout issue in mobile screen
+Fixed the progress bar layout issue
+Fixed the add files button issue.
+
+Enhancements
+Modified to load all the JS and CSS files from the plugin directory
+Eliminated inclusion of unwanted JS and CSS files
 
 Version 2.2
 

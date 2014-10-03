@@ -3,7 +3,7 @@
 Plugin Name: JQuery Html5 File Upload
 Plugin URI: http://wordpress.org/extend/plugins/jquery-html5-file-upload/
 Description: This plugin adds a file upload functionality to the front-end screen. It allows multiple file upload asynchronously along with upload status bar.
-Version: 2.2
+Version: 3.0
 Author: Sinash Shajahan
 Author URI: 
 License: GPLv2 or later
@@ -191,11 +191,8 @@ function jqhfu_enqueue_scripts() {
 	$stylepath=JQHFUPLUGINDIRURL.'css/';
 	$scriptpath=JQHFUPLUGINDIRURL.'js/';
 	
-	//wp_enqueue_style ( 'bootstrap-style', $stylepath.'bootstrap.min.css' );
-	wp_enqueue_style ( 'jquery-ui-theme', $stylepath.'jquery-ui/themes/dark-hive/jquery-ui.css' );
 	wp_enqueue_style ( 'blueimp-gallery-style', $stylepath.'blueimp-gallery.min.css' );
 	wp_enqueue_style ( 'jquery.fileupload-style', $stylepath.'jquery.fileupload.css' );
-	wp_enqueue_style ( 'jquery.fileupload-ui-style', $stylepath.'jquery.fileupload-ui.css' );
 
 	if(!wp_script_is('jquery')) {
 		wp_enqueue_script ( 'jquery', $scriptpath .'jquery.min.js',array(),'',false);
@@ -213,7 +210,7 @@ function jqhfu_enqueue_scripts() {
 	wp_enqueue_script ( 'jquery-fileupload-video-script', $scriptpath . 'jquery.fileupload-video.js',array('jquery'),'',true);
 	wp_enqueue_script ( 'jquery-fileupload-validate-script', $scriptpath . 'jquery.fileupload-validate.js',array('jquery'),'',true);
 	wp_enqueue_script ( 'jquery-fileupload-ui-script', $scriptpath . 'jquery.fileupload-ui.js',array('jquery'),'',true);
-	wp_enqueue_script ( 'jquery-fileupload-ui-script', $scriptpath . 'jquery.fileupload-jquery-ui.js',array('jquery'),'',true);
+	wp_enqueue_script ( 'jquery-fileupload-jquery-ui-script', $scriptpath . 'jquery.fileupload-jquery-ui.js',array('jquery'),'',true);
 }	
 
 function jqhfu_load_ajax_function()
@@ -232,16 +229,7 @@ function jqhfu_load_ajax_function()
 function jqhfu_add_inline_script() {
 ?>
 <script type="text/javascript">
-/*
- * jQuery File Upload Plugin JS Example 7.0
- * https://github.com/blueimp/jQuery-File-Upload
- *
- * Copyright 2010, Sebastian Tschan
- * https://blueimp.net
- *
- * Licensed under the MIT license:
- * http://www.opensource.org/licenses/MIT
- */
+
 jQuery(function () {
     'use strict';
 
@@ -283,21 +271,6 @@ jQuery(function () {
         });
     }
 
-    // Initialize the Image Gallery widget:
-    //jQuery('#fileupload .files').imagegallery();
-
-    // Initialize the theme switcher:
-    /*jQuery('#theme-switcher').change(function () {
-        var theme = jQuery('#theme');
-        theme.prop(
-            'href',
-            theme.prop('href').replace(
-                /[\w\-]+\/jquery-ui.css/,
-                jQuery(this).val() + '/jquery-ui.css'
-            )
-        );
-    });*/
-
 });
 </script>
 <?php
@@ -307,26 +280,26 @@ jQuery(function () {
 function jquery_html5_file_upload_hook() {
 ?>
 <!-- The file upload form used as target for the file upload widget -->
-    <form id="fileupload" action="<?php print(admin_url().'admin-ajax.php');?>" method="POST" enctype="multipart/form-data">
+    <form id="fileupload" action="<?php print(admin_url().'admin-ajax.php');?>" method="POST" enctype="multipart/form-data" style="max-width:500px;">
         <!-- Redirect browsers with JavaScript disabled to the origin page -->
        <input type="hidden" name="action" value="load_ajax_function" />
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
        <div class="fileupload-buttonbar">
        <div class="fileupload-buttons">
             <!-- The fileinput-button span is used to style the file input field as button -->
-            <span class="fileinput-button">
-                <span>Add files...</span>
-                <input type="file" name="files[]" multiple>
-            </span>
-            <button type="submit" class="start">Start upload</button>
-            <button type="reset" class="cancel">Cancel upload</button>
-            <button type="button" class="delete">Delete</button>
+            <label class="jqhfu-file-container">
+              Add files...
+                <input type="file" name="files[]" multiple class="jqhfu-inputfile">
+            </label>
+			<button type="submit" class="start jqhfu-button">Start upload</button>
+            <button type="reset" class="cancel jqhfu-button">Cancel upload</button>
+            <button type="button" class="delete jqhfu-button">Delete</button>
             <input type="checkbox" class="toggle">
             <!-- The global file processing state -->
             <span class="fileupload-process"></span>
         </div>
         <!-- The global progress state -->
-        <div class="fileupload-progress fade" style="display:none">
+        <div class="fileupload-progress jqhfu-fade" style="display:none;max-width:500px;margin-top:2px;">
             <!-- The global progress bar -->
             <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
             <!-- The extended global progress state -->
@@ -334,8 +307,9 @@ function jquery_html5_file_upload_hook() {
         </div>
     </div>
     <!-- The table listing the files available for upload/download -->
+	<div class="jqhfu-upload-download-table">
     <table role="presentation"><tbody class="files"></tbody></table>
-		
+	</div>	
     </form>
    
 <!-- The blueimp Gallery widget -->
@@ -351,12 +325,12 @@ function jquery_html5_file_upload_hook() {
 <!-- The template to display files available for upload -->
 <script id="template-upload" type="text/x-tmpl">
 {% for (var i=0, file; file=o.files[i]; i++) { %}
-    <tr class="template-upload fade">
+    <tr class="template-upload jqhfu-fade">
         <td>
             <span class="preview"></span>
         </td>
         <td>
-            <p class="name">{%=file.name%}</p>
+            <p class="name" style="max-width:190px;overflow-x:hidden;">{%=file.name%}</p>
             <strong class="error"></strong>
         </td>
         <td>
@@ -365,10 +339,10 @@ function jquery_html5_file_upload_hook() {
         </td>
         <td>
             {% if (!i && !o.options.autoUpload) { %}
-                <button class="start" disabled>Start</button>
+                <button class="start jqhfu-button" disabled>Start</button>
             {% } %}
             {% if (!i) { %}
-                <button class="cancel">Cancel</button>
+                <button class="cancel jqhfu-button">Cancel</button>
             {% } %}
         </td>
     </tr>
@@ -377,7 +351,7 @@ function jquery_html5_file_upload_hook() {
 <!-- The template to display files available for download -->
 <script id="template-download" type="text/x-tmpl">
 {% for (var i=0, file; file=o.files[i]; i++) { %}
-    <tr class="template-download fade">
+    <tr class="template-download jqhfu-fade">
         <td>
             <span class="preview">
                 {% if (file.thumbnailUrl) { %}
@@ -386,7 +360,7 @@ function jquery_html5_file_upload_hook() {
             </span>
         </td>
         <td>
-            <p class="name">
+            <p class="name" style="max-width:190px;overflow-x:hidden;">
                 <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
             </p>
             {% if (file.error) { %}
@@ -397,7 +371,7 @@ function jquery_html5_file_upload_hook() {
             <span class="size">{%=o.formatFileSize(file.size)%}</span>
         </td>
         <td>
-            <button class="delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>Delete</button>
+            <button class="delete jqhfu-button" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}&action=load_ajax_function"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>Delete</button>
             <input type="checkbox" name="delete" value="1" class="toggle">
         </td>
     </tr>
