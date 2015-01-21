@@ -4,7 +4,7 @@ Plugin Name: JQuery Html5 File Upload
 Plugin URI: http://wordpress.org/extend/plugins/jquery-html5-file-upload/
 Description: This plugin adds a file upload functionality to the front-end screen. It allows multiple file upload asynchronously along with upload status bar.
 Version: 3.0
-Author: Sinash Shajahan
+Author: sinashshajahan
 Author URI: 
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
